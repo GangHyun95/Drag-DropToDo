@@ -1,8 +1,9 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms";
+import { toDoState, TrashCanState } from "./atoms";
 import Board from "./components/Board";
+import TrashCan from "./components/TrashCan";
 // DragDopContext로 사용할 컴포넌트 감싸줌
 // onDragEnd 함수는 유저가 드래그를 끝낸 시점ㅈ에 불려지는 함수
 
@@ -25,17 +26,27 @@ const Boards = styled.div`
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
+  const setTrashCan = useSetRecoilState(TrashCanState);
 
+  const onBeforeDragStart = () => {
+    setTrashCan(true);
+  };
   const onDragEnd = (info: DropResult) => {
     const { destination, source } = info;
     if (!destination) return;
-    console.log(toDos);
-    // 삭제
-    if (destination?.droppableId === source.droppableId) {
+    setTrashCan(false);
+    if (destination.droppableId === "trashcan") {
+      setToDos((allBoards) => {
+        const boardCopy = [...allBoards[source.droppableId]];
+        boardCopy.splice(source.index, 1);
+        return {
+          ...allBoards,
+          [source.droppableId]: boardCopy,
+        };
+      });
+    } else if (destination?.droppableId === source.droppableId) {
       //same board movement
       setToDos((allBoards) => {
-        console.log(allBoards);
-
         const boardCopy = [...allBoards[source.droppableId]];
         const taskObj = boardCopy[source.index];
         // 1)Delete item on soruce.index
@@ -65,13 +76,17 @@ function App() {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext
+      onDragEnd={onDragEnd}
+      onBeforeDragStart={onBeforeDragStart}
+    >
       <Wrapper>
         <Boards>
           {Object.keys(toDos).map((boardId) => (
             <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
           ))}
         </Boards>
+        <TrashCan />
       </Wrapper>
     </DragDropContext>
   );
