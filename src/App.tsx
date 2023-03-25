@@ -1,4 +1,9 @@
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  DragStart,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState, TrashCanState } from "./atoms";
@@ -27,14 +32,17 @@ const Boards = styled.div`
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const setTrashCan = useSetRecoilState(TrashCanState);
-
-  const onBeforeDragStart = () => {
-    setTrashCan(true);
+  // 드래그 시작 시 실행되는 함수
+  const onBeforeDragStart = (info: DragStart) => {
+    if (info.type === "DEFAULT") setTrashCan(true);
   };
+  // 드래그 끝날 시 실행되는 함수
   const onDragEnd = (info: DropResult) => {
     const { destination, source } = info;
     if (!destination) return;
     setTrashCan(false);
+    console.log(info);
+    // 카드 삭제 기능
     if (destination.droppableId === "trashcan") {
       setToDos((allBoards) => {
         const boardCopy = [...allBoards[source.droppableId]];
@@ -44,8 +52,19 @@ function App() {
           [source.droppableId]: boardCopy,
         };
       });
+    }
+    // 보드 이동하기
+    else if (info.type === "board") {
+      setToDos((allBoards) => {
+        const entries = Object.entries(allBoards);
+        console.log(entries);
+
+        const [deletedItem] = entries.splice(source.index, 1);
+        entries.splice(destination.index, 0, deletedItem);
+        return Object.fromEntries(entries);
+      });
     } else if (destination?.droppableId === source.droppableId) {
-      //same board movement
+      // 같은 보드안에서 카드 이동
       setToDos((allBoards) => {
         const boardCopy = [...allBoards[source.droppableId]];
         const taskObj = boardCopy[source.index];
@@ -59,7 +78,7 @@ function App() {
         };
       });
     } else if (destination.droppableId !== source.droppableId) {
-      // cross board movement
+      //  다른 보드로 카드 이동
       setToDos((allBoard) => {
         const sourceBoard = [...allBoard[source.droppableId]];
         const taskObj = sourceBoard[source.index];
@@ -81,11 +100,20 @@ function App() {
       onBeforeDragStart={onBeforeDragStart}
     >
       <Wrapper>
-        <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
-          ))}
-        </Boards>
+        <Droppable direction="horizontal" type="board" droppableId="board">
+          {(magic, snapshot) => (
+            <Boards ref={magic.innerRef} {...magic.droppableProps}>
+              {Object.keys(toDos).map((boardId, i) => (
+                <Board
+                  key={boardId}
+                  boardId={boardId}
+                  toDos={toDos[boardId]}
+                  index={i}
+                />
+              ))}
+            </Boards>
+          )}
+        </Droppable>
         <TrashCan />
       </Wrapper>
     </DragDropContext>
