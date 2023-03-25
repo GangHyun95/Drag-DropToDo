@@ -10,19 +10,19 @@ const Card = styled.li`
 `;
 
 interface IDraggableCardProps {
-  todo: string;
+  toDo: string;
   i: number;
 }
-function DraggableCard({ todo, i }: IDraggableCardProps) {
+function DraggableCard({ toDo, i }: IDraggableCardProps) {
   return (
-    <Draggable key={todo} draggableId={todo} index={i}>
+    <Draggable key={toDo} draggableId={toDo} index={i}>
       {(magic) => (
         <Card
           ref={magic.innerRef}
           {...magic.draggableProps}
           {...magic.dragHandleProps}
         >
-          {todo}
+          {toDo}
         </Card>
       )}
     </Draggable>
