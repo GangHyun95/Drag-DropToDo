@@ -6,15 +6,17 @@ import styled from "styled-components";
 import { ITodo, toDoState } from "../atoms";
 import DraggableCard from "./DraggableCard";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<IWrapperProps>`
   display: flex;
   flex-direction: column;
   width: 360px;
-  background-color: ${(props) => props.theme.boardColor};
+  background-color: ${(props) =>
+    props.isDragging ? props.theme.scroll : props.theme.boardColor};
   border-radius: 5px;
   min-height: 450px;
   max-height: 450px;
   overflow: hidden;
+  transition: background-color 0.3s ease-in-out;
 `;
 
 const Title = styled.h2`
@@ -24,6 +26,9 @@ const Title = styled.h2`
   font-size: 24px;
   background-color: ${(props) => props.theme.titleBgColor};
 `;
+interface IWrapperProps {
+  isDragging: boolean;
+}
 interface IAreaProps {
   isDraggingOver: boolean;
   isDraggingFromThis: boolean;
@@ -31,9 +36,9 @@ interface IAreaProps {
 const Area = styled.div<IAreaProps>`
   background-color: ${(props) =>
     props.isDraggingOver
-      ? "#dfe6e9"
+      ? props.theme.titleBgColor
       : props.isDraggingFromThis
-      ? "#b2bec3"
+      ? props.theme.scroll
       : "transparent"};
   flex: 1 1 auto;
   transition: background-color 0.3s ease-in-out;
@@ -85,6 +90,7 @@ const Board = ({ toDos, boardId, index }: IBoardProps) => {
           ref={magic.innerRef}
           {...magic.dragHandleProps}
           {...magic.draggableProps}
+          isDragging={snapshot.isDragging}
         >
           <Title>{boardId}</Title>
           <Form onSubmit={handleSubmit(onValid)}>

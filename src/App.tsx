@@ -111,6 +111,7 @@ function App() {
                   index={i}
                 />
               ))}
+              {magic.placeholder}
             </Boards>
           )}
         </Droppable>

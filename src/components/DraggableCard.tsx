@@ -7,7 +7,7 @@ const Card = styled.li<{ isDragging: boolean }>`
   margin-bottom: 8px;
   border-radius: 5px;
   background-color: ${(props) =>
-    props.isDragging ? "#e4f2ff" : props.theme.cardColor};
+    props.isDragging ? props.theme.scroll : props.theme.cardColor};
   box-shadow: ${(props) =>
     props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
 `;
