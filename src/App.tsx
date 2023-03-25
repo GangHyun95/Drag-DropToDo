@@ -27,12 +27,15 @@ function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
 
   const onDragEnd = (info: DropResult) => {
-    console.log(info);
-    const { destination, draggableId, source } = info;
+    const { destination, source } = info;
     if (!destination) return;
+    console.log(toDos);
+    // 삭제
     if (destination?.droppableId === source.droppableId) {
       //same board movement
       setToDos((allBoards) => {
+        console.log(allBoards);
+
         const boardCopy = [...allBoards[source.droppableId]];
         const taskObj = boardCopy[source.index];
         // 1)Delete item on soruce.index
@@ -44,8 +47,7 @@ function App() {
           [source.droppableId]: boardCopy,
         };
       });
-    }
-    if (destination.droppableId !== source.droppableId) {
+    } else if (destination.droppableId !== source.droppableId) {
       // cross board movement
       setToDos((allBoard) => {
         const sourceBoard = [...allBoard[source.droppableId]];
@@ -61,6 +63,7 @@ function App() {
       });
     }
   };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>

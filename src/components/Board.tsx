@@ -69,13 +69,13 @@ const Board = ({ toDos, boardId }: IBoardProps) => {
       id: Date.now(),
       text: toDo,
     };
-    setValue("toDo", "");
     setToDos((allBoards) => {
       return {
         ...allBoards,
         [boardId]: [...allBoards[boardId], newToDo],
       };
     });
+    setValue("toDo", "");
   };
   return (
     <Wrapper>
