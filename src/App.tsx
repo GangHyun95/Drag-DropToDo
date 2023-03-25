@@ -8,6 +8,7 @@ import {
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
+import DraggableCard from "./components/DraggableCard";
 // DragDopContext로 사용할 컴포넌트 감싸줌
 // onDragEnd 함수는 유저가 드래그를 끝낸 시점ㅈ에 불려지는 함수
 
@@ -34,17 +35,9 @@ const Board = styled.ul`
   border-radius: 5px;
 `;
 
-const Card = styled.li`
-  padding: 10px;
-  margin-bottom: 4px;
-  background-color: ${(props) => props.theme.cardColor};
-  border-radius: 5px;
-`;
-
-const toDos = ["a", "b", "c", "d", "e", "f"];
-
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
+
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
     console.log(draggableId, destination, source);
     if (!destination) return;
@@ -65,17 +58,7 @@ function App() {
             {(magic) => (
               <Board ref={magic.innerRef} {...magic.droppableProps}>
                 {toDos.map((todo, i) => (
-                  <Draggable key={todo} draggableId={todo} index={i}>
-                    {(magic) => (
-                      <Card
-                        ref={magic.innerRef}
-                        {...magic.draggableProps}
-                        {...magic.dragHandleProps}
-                      >
-                        {todo}
-                      </Card>
-                    )}
-                  </Draggable>
+                  <DraggableCard key={todo} i={i} todo={todo} />
                 ))}
                 {magic.placeholder}
               </Board>
