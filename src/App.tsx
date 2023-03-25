@@ -1,6 +1,13 @@
 import React from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { toDoState } from "./atoms";
 // DragDopContext로 사용할 컴포넌트 감싸줌
 // onDragEnd 함수는 유저가 드래그를 끝낸 시점ㅈ에 불려지는 함수
 
@@ -37,7 +44,19 @@ const Card = styled.li`
 const toDos = ["a", "b", "c", "d", "e", "f"];
 
 function App() {
-  const onDragEnd = () => {};
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    console.log(draggableId, destination, source);
+    if (!destination) return;
+    setToDos((oldToDos) => {
+      const toDosCopy = [...oldToDos];
+      // 1)Delete item on soruce.index
+      toDosCopy.splice(source.index, 1);
+      // 2) Put back the item on the destination.index
+      toDosCopy.splice(destination?.index, 0, draggableId);
+      return toDosCopy;
+    });
+  };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
@@ -46,7 +65,7 @@ function App() {
             {(magic) => (
               <Board ref={magic.innerRef} {...magic.droppableProps}>
                 {toDos.map((todo, i) => (
-                  <Draggable draggableId={todo} index={i}>
+                  <Draggable key={todo} draggableId={todo} index={i}>
                     {(magic) => (
                       <Card
                         ref={magic.innerRef}
