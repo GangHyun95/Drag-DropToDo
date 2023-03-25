@@ -3,8 +3,8 @@ import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
 const Card = styled.li<{ isDragging: boolean }>`
-  padding: 10px;
-  margin-bottom: 5px;
+  padding: 16px;
+  margin-bottom: 8px;
   border-radius: 5px;
   background-color: ${(props) =>
     props.isDragging ? "#e4f2ff" : props.theme.cardColor};

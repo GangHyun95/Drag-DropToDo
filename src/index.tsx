@@ -5,8 +5,12 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import App from "./App";
 import { darkTheme } from "./theme";
 
-const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+const GlobalStyle = createGlobalStyle`@font-face {
+  font-family: 'GmarketSansMedium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -57,16 +61,39 @@ table {
 * {
   box-sizing: border-box;
 }
+
 body {
-  font-weight: 300;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-family: 'GmarketSansMedium', sans-serif;
   background-color:${(props) => props.theme.bgColor};
-  color:black;
+  color:${(props) => props.theme.textColor};
   line-height: 1.2;
+  font-size:18px;
+}
+input::placeholder{
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-weight:600;
+  font-size:14px;
 }
 a {
   text-decoration:none;
   color:inherit;
+}
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: ${(props) => props.theme.bgColor};
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius:10px;
+  background-color: ${(props) => props.theme.cardColor};
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color:${(props) => props.theme.scroll}
 }
 `;
 

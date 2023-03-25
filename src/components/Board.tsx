@@ -7,21 +7,22 @@ import { ITodo, toDoState } from "../atoms";
 import DraggableCard from "./DraggableCard";
 
 const Wrapper = styled.div`
-  width: 300px;
-  padding: 10px 0px;
-  background-color: ${(props) => props.theme.boardColor};
-  border-radius: 5px;
-  min-height: 300px;
   display: flex;
   flex-direction: column;
+  width: 360px;
+  background-color: ${(props) => props.theme.boardColor};
+  border-radius: 5px;
+  min-height: 450px;
+  max-height: 450px;
   overflow: hidden;
 `;
 
 const Title = styled.h2`
   text-align: center;
   font-weight: 600;
-  margin-bottom: 10px;
-  font-size: 18px;
+  padding: 20px 0px;
+  font-size: 24px;
+  background-color: ${(props) => props.theme.titleBgColor};
 `;
 interface IAreaProps {
   isDraggingOver: boolean;
@@ -34,15 +35,18 @@ const Area = styled.div<IAreaProps>`
       : props.isDraggingFromThis
       ? "#b2bec3"
       : "transparent"};
-  flex-grow: 1;
+  flex: 1 1 auto;
   transition: background-color 0.3s ease-in-out;
   padding: 20px;
+  overflow-y: auto;
 `;
 
 const Form = styled.form`
   width: 100%;
   input {
     width: 100%;
+    padding: 18px 10px;
+    border-radius: 3px;
     outline: none;
     border: none;
   }
