@@ -1,17 +1,17 @@
 # React Drag & Drop TodoList
 
-## 🖥️ 프로젝트 소개
+## 🔎 프로젝트 소개
 Drag & Drop 이 가능한 TodoList 입니다.
 
-## 💻 사용 기술
+## 🔨 사용 기술
 
-- `React`
-- `React-beautiful-dnd`
-- `JavaScript`
-- `TypeScript`
-- `Recoil`
-- `Recoilpersist`
-- `Styled-Components`
+* `React`
+* `React-beautiful-dnd`
+* `JavaScript`
+* `TypeScript`
+* `Recoil`
+* `Recoilpersist`
+* `Styled-Components`
 
 ## 📌 주요 기능
 
