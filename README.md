@@ -19,4 +19,4 @@ Drag & Drop 이 가능한 TodoList 입니다.
 
 #### TodoList 작성 및 Drag & Drop 가능
 
-#### TodoList Drag 시 우측 하단에 휴지통 아이콘이 생기며 Drop 시 
+#### TodoList Drag 시 우측 하단에 휴지통 아이콘이 생기며 Drop 시 삭제 기능
