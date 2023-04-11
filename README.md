@@ -12,6 +12,7 @@ Drag & Drop 이 가능한 TodoList 입니다.
 * `Recoil`
 * `Recoilpersist`
 * `Styled-Components`
+* `react-hook-form`
 
 ## 📌 주요 기능
 
